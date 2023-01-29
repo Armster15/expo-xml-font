@@ -20,7 +20,12 @@ interface WithXMLFontOptions {
      * @example "inter_regular.ttf" -> "inter_regular"
      */
     fontFile: string;
+    /** The font weight of the provided font file */
     fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+    /**
+     * Specifies whether or not the font file is italic
+     * @default false
+     */
     italic?: boolean;
   }[];
 }
