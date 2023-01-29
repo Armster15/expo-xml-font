@@ -31,10 +31,8 @@
     "@types/fs-extra": "^11.0.1",
     "expo-module-scripts": "^3.0.4"
   },
-  "peerDependencies": {
-    "fs-extra": "^11.1.0"
-  },
   "dependencies": {
-    "@expo/config-plugins": "^5.0.4"
+    "@expo/config-plugins": "^5.0.4",
+    "fs-extra": "^11.1.0"
   }
 }
