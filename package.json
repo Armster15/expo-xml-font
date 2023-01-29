@@ -29,17 +29,23 @@
     "build": "expo-module build",
     "clean": "expo-module clean",
     "test": "expo-module test",
-    "prepare": "expo-module prepare",
+    "prepare": "husky install",
     "prepublishOnly": "expo-module prepublishOnly",
     "expo-module": "expo-module"
   },
   "devDependencies": {
     "@expo/config": "^7.0.3",
     "@types/fs-extra": "^11.0.1",
-    "expo-module-scripts": "^3.0.4"
+    "expo-module-scripts": "^3.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.3"
   },
   "dependencies": {
     "@expo/config-plugins": "^5.0.4",
     "fs-extra": "^11.1.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
