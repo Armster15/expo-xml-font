@@ -63,22 +63,24 @@ inter_black.ttf (900)
 ```json
 {
   "plugins": [
-    "expo-xml-font",
-    {
-      "name": "Inter",
-      "folder": "assets/fonts",
-      "variants": [
-        { "fontFile": "inter_thin", "fontWeight": 100 },
-        { "fontFile": "inter_extralight", "fontWeight": 200 },
-        { "fontFile": "inter_light", "fontWeight": 300 },
-        { "fontFile": "inter_regular", "fontWeight": 400 },
-        { "fontFile": "inter_medium", "fontWeight": 500 },
-        { "fontFile": "inter_semibold", "fontWeight": 600 },
-        { "fontFile": "inter_bold", "fontWeight": 700 },
-        { "fontFile": "inter_extrabold", "fontWeight": 800 },
-        { "fontFile": "inter_black", "fontWeight": 900 }
-      ]
-    }
+    [
+      "expo-xml-font",
+      {
+        "name": "Inter",
+        "folder": "assets/fonts",
+        "variants": [
+          { "fontFile": "inter_thin", "fontWeight": 100 },
+          { "fontFile": "inter_extralight", "fontWeight": 200 },
+          { "fontFile": "inter_light", "fontWeight": 300 },
+          { "fontFile": "inter_regular", "fontWeight": 400 },
+          { "fontFile": "inter_medium", "fontWeight": 500 },
+          { "fontFile": "inter_semibold", "fontWeight": 600 },
+          { "fontFile": "inter_bold", "fontWeight": 700 },
+          { "fontFile": "inter_extrabold", "fontWeight": 800 },
+          { "fontFile": "inter_black", "fontWeight": 900 }
+        ]
+      }
+    ]
   ]
 }
 ```
