@@ -89,7 +89,7 @@ inter_black.ttf (900)
 
 When using `expo-xml-font`, you need to pass in an object providing all the details of the font.
 
-````ts
+```ts
 interface Options {
   /**
    * Name of font
@@ -115,5 +115,5 @@ interface Options {
      */
     italic?: boolean;
   }[];
-}```
-````
+}
+```
