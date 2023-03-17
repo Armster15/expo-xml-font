@@ -1,7 +1,7 @@
-import { withMainApplication } from "@expo/config-plugins";
+import { withMainApplication } from "expo/config-plugins";
 import fs from "fs-extra";
 import path from "node:path";
-import type { ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "expo/config";
 
 interface WithXMLFontOptions {
   /**
