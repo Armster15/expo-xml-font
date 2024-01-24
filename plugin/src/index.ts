@@ -38,11 +38,13 @@ const withAndroidXMLFont = (
   { folder, name, variants }: WithXMLFontOptions
 ) => {
   return withMainApplication(config, async (config) => {
+    const fileName = name.replaceAll(' ', '_').toLowerCase();
+    
     // 1. Modify MainApplication.java file
     const mainApplicaion = config.modResults.contents.split("\n");
 
     const importRNFontManagerLine = `import com.facebook.react.views.text.ReactFontManager;`;
-    const addCustomFontLine = `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()});`;
+    const addCustomFontLine = `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.fileName});`;
 
     const isImportRNFontManagerLinePresent = !!mainApplicaion.find(
       (line) => line.trim() === importRNFontManagerLine
@@ -92,7 +94,7 @@ const withAndroidXMLFont = (
     xml += `</font-family>`;
 
     await fs.writeFile(
-      path.join("android/app/src/main/res/font", `${name.toLowerCase()}.xml`),
+      path.join("android/app/src/main/res/font", `${fileName}.xml`),
       xml
     );
 
