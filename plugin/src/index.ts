@@ -52,10 +52,10 @@ const withAndroidXMLFont = (
     );
 
     const line1 = mainApplicaion.findIndex(
-      (line) => line.trim() === "import com.facebook.react.ReactPackage;"
+      (line) => line.trim() === "import com.facebook.react.ReactPackage"
     );
     const line2 = mainApplicaion.findIndex(
-      (line) => line.trim() === "super.onCreate();"
+      (line) => line.trim() === "super.onCreate()"
     );
 
     if (!isImportRNFontManagerLinePresent) {
