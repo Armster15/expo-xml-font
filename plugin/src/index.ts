@@ -1,9 +1,10 @@
-import { withMainApplication } from "expo/config-plugins";
+import { withMainApplication } from "@expo/config-plugins";
+import { mergeContents } from "@expo/config-plugins/build/utils/generateCode";
 import fs from "fs-extra";
 import path from "node:path";
 import type { ExpoConfig } from "expo/config";
 
-interface WithXMLFontOptions {
+type WithXMLFontOptions = {
   /**
    * Name of font
    * @example "Inter"
@@ -28,73 +29,76 @@ interface WithXMLFontOptions {
      */
     italic?: boolean;
   }[];
-}
+}[];
 
 /**
  * Expo plugin that creates an Android XML font
  */
-const withAndroidXMLFont = (
-  config: ExpoConfig,
-  { folder, name, variants }: WithXMLFontOptions
-) => {
+const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
   return withMainApplication(config, async (config) => {
     // 1. Modify MainApplication.java file
-    const mainApplicaion = config.modResults.contents.split("\n");
+    let mainApplication = config.modResults.contents;
 
-    const importRNFontManagerLine = `import com.facebook.react.views.text.ReactFontManager;`;
-    const addCustomFontLine = `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()});`;
+    // Adds "import com.facebook.react.views.text.ReactFontManager;" line
+    mainApplication = mergeContents({
+      src: mainApplication,
+      anchor: "import com.facebook.react.ReactPackage;",
+      newSrc: "import com.facebook.react.views.text.ReactFontManager;",
+      comment: "//",
+      offset: 1,
+      tag: "expo-xml-font:import-rn-font-manager-line",
+    }).contents;
 
-    const isImportRNFontManagerLinePresent = !!mainApplicaion.find(
-      (line) => line.trim() === importRNFontManagerLine
-    );
-    const isAddCustomFontLinePresent = !!mainApplicaion.find(
-      (line) => line.trim() === addCustomFontLine
-    );
+    // Adds custom font lines
+    const addCustomFontLine = fonts
+      .map(
+        ({ name }) =>
+          `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()});`
+      )
+      .join("\n");
 
-    const line1 = mainApplicaion.findIndex(
-      (line) => line.trim() === "import com.facebook.react.ReactPackage;"
-    );
-    const line2 = mainApplicaion.findIndex(
-      (line) => line.trim() === "super.onCreate();"
-    );
+    mainApplication = mergeContents({
+      src: mainApplication,
+      anchor: /^\s*super\.onCreate\(\);\s*$/, // "super.onCreate();"
+      newSrc: addCustomFontLine,
+      comment: "//",
+      offset: 1,
+      tag: "expo-xml-font:add-custom-font-line",
+    }).contents;
 
-    if (!isImportRNFontManagerLinePresent) {
-      mainApplicaion.splice(line1 + 1, 0, importRNFontManagerLine);
-    }
-    if (!isAddCustomFontLinePresent)
-      mainApplicaion.splice(line2 + 2, 0, addCustomFontLine);
+    config.modResults.contents = mainApplication;
 
-    config.modResults.contents = mainApplicaion.join("\n");
+    // 2. Copy fonts to respective Android folders
+    for (const { name, folder, variants } of fonts) {
+      await fs.copy(folder, "android/app/src/main/res/font");
 
-    // 2. Copy fonts to respective Android folder
-    await fs.copy(folder, "android/app/src/main/res/font");
-
-    // Validates that none of the files have a "-" or uppercase letters
-    for (const file of await fs.readdir(folder)) {
-      if (file.includes("-") || file.toLowerCase() !== file) {
-        throw new Error(
-          `Font files must not have dashes ("-") and must be all lowercase.`
-        );
+      // Validates that none of the files have a "-" or uppercase letters
+      for (const file of await fs.readdir(folder)) {
+        if (file.includes("-") || file.toLowerCase() !== file) {
+          throw new Error(
+            `Font files must not have dashes ("-") and must be all lowercase.`
+          );
+        }
       }
+
+      // 3. Create XML File
+      let xml =
+        `<?xml version="1.0" encoding="utf-8"?>\n` +
+        `<font-family xmlns:app="http://schemas.android.com/apk/res-auto">\n`;
+
+      for (const { fontFile, fontWeight, italic } of variants) {
+        xml += `    <font app:fontStyle="${
+          italic ? "italic" : "normal"
+        }" app:fontWeight="${fontWeight}" app:font="@font/${fontFile}" />\n`;
+      }
+
+      xml += `</font-family>`;
+
+      await fs.writeFile(
+        path.join("android/app/src/main/res/font", `${name.toLowerCase()}.xml`),
+        xml
+      );
     }
-
-    // 3. Create XML File
-    let xml =
-      `<?xml version="1.0" encoding="utf-8"?>\n` +
-      `<font-family xmlns:app="http://schemas.android.com/apk/res-auto">\n`;
-
-    for (const { fontFile, fontWeight, italic } of variants) {
-      xml += `    <font app:fontStyle="${
-        italic ? "italic" : "normal"
-      }" app:fontWeight="${fontWeight}" app:font="@font/${fontFile}" />\n`;
-    }
-
-    xml += `</font-family>`;
-
-    await fs.writeFile(
-      path.join("android/app/src/main/res/font", `${name.toLowerCase()}.xml`),
-      xml
-    );
 
     return config;
   });

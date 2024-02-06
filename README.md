@@ -65,21 +65,23 @@ inter_black.ttf (900)
   "plugins": [
     [
       "expo-xml-font",
-      {
-        "name": "Inter",
-        "folder": "assets/fonts",
-        "variants": [
-          { "fontFile": "inter_thin", "fontWeight": 100 },
-          { "fontFile": "inter_extralight", "fontWeight": 200 },
-          { "fontFile": "inter_light", "fontWeight": 300 },
-          { "fontFile": "inter_regular", "fontWeight": 400 },
-          { "fontFile": "inter_medium", "fontWeight": 500 },
-          { "fontFile": "inter_semibold", "fontWeight": 600 },
-          { "fontFile": "inter_bold", "fontWeight": 700 },
-          { "fontFile": "inter_extrabold", "fontWeight": 800 },
-          { "fontFile": "inter_black", "fontWeight": 900 }
-        ]
-      }
+      [
+        {
+          "name": "Inter",
+          "folder": "assets/fonts",
+          "variants": [
+            { "fontFile": "inter_thin", "fontWeight": 100 },
+            { "fontFile": "inter_extralight", "fontWeight": 200 },
+            { "fontFile": "inter_light", "fontWeight": 300 },
+            { "fontFile": "inter_regular", "fontWeight": 400 },
+            { "fontFile": "inter_medium", "fontWeight": 500 },
+            { "fontFile": "inter_semibold", "fontWeight": 600 },
+            { "fontFile": "inter_bold", "fontWeight": 700 },
+            { "fontFile": "inter_extrabold", "fontWeight": 800 },
+            { "fontFile": "inter_black", "fontWeight": 900 }
+          ]
+        }
+      ]
     ]
   ]
 }
@@ -92,7 +94,7 @@ inter_black.ttf (900)
 When using `expo-xml-font`, you need to pass in an object providing all the details of the font.
 
 ```ts
-interface Options {
+type Options = {
   /**
    * Name of font
    * @example "Inter"
@@ -117,5 +119,7 @@ interface Options {
      */
     italic?: boolean;
   }[];
-}
+}[];
 ```
+
+Since this plugin takes in an array of fonts, you can specify as many font families as you want to.

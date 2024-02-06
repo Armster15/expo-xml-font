@@ -1,6 +1,6 @@
 {
   "name": "expo-xml-font",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Use Android XML Fonts easily with this Expo plugin",
   "main": "app.plugin.js",
   "repository": "git@github.com:Armster15/expo-xml-font.git",
@@ -45,12 +45,7 @@
     "prettier": "2.8.3"
   },
   "peerDependencies": {
-    "expo": ">=47.0.0"
-  },
-  "peerDependenciesMeta": {
-    "expo": {
-      "optional": true
-    }
+    "@expo/config-plugins": ">=6.0.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
