@@ -1,6 +1,6 @@
 {
   "name": "expo-xml-font",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Use Android XML Fonts easily with this Expo plugin",
   "main": "app.plugin.js",
   "repository": "git@github.com:Armster15/expo-xml-font.git",
