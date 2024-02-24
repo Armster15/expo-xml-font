@@ -39,11 +39,11 @@ const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
     // 1. Modify MainApplication.java file
     let mainApplication = config.modResults.contents;
 
-    // Adds "import com.facebook.react.views.text.ReactFontManager;" line
+    // Adds "import com.facebook.react.views.text.ReactFontManager" line
     mainApplication = mergeContents({
       src: mainApplication,
-      anchor: "import com.facebook.react.ReactPackage;",
-      newSrc: "import com.facebook.react.views.text.ReactFontManager;",
+      anchor: "import com.facebook.react.ReactPackage",
+      newSrc: "import com.facebook.react.views.text.ReactFontManager",
       comment: "//",
       offset: 1,
       tag: "expo-xml-font:import-rn-font-manager-line",
@@ -53,13 +53,13 @@ const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
     const addCustomFontLine = fonts
       .map(
         ({ name }) =>
-          `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()});`
+          `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()})`
       )
       .join("\n");
 
     mainApplication = mergeContents({
       src: mainApplication,
-      anchor: /^\s*super\.onCreate\(\);\s*$/, // "super.onCreate();"
+      anchor: /^\s*super\.onCreate\(\)\s*$/, // "super.onCreate()"
       newSrc: addCustomFontLine,
       comment: "//",
       offset: 1,
