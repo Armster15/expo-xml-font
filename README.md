@@ -6,6 +6,9 @@ This plugin builds off an awesome guide available at https://github.com/jsamr/re
 
 ## Installation
 
+> [!NOTE]  
+> v3 is for Expo 50<= while v2 is for Expo 49>=
+
 1. Install the plugin
 
 ```bash
