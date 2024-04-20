@@ -53,7 +53,7 @@ const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
     const addCustomFontLine = fonts
       .map(
         ({ name }) =>
-          `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${name.toLowerCase()})`
+          `ReactFontManager.getInstance().addCustomFont(this, "${name}", R.font.${formatName(name)})`
       )
       .join("\n");
 
@@ -95,7 +95,7 @@ const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
       xml += `</font-family>`;
 
       await fs.writeFile(
-        path.join("android/app/src/main/res/font", `${name.toLowerCase()}.xml`),
+        path.join("android/app/src/main/res/font", `${formatName(name)}.xml`),
         xml
       );
     }
@@ -103,5 +103,12 @@ const withAndroidXMLFont = (config: ExpoConfig, fonts: WithXMLFontOptions) => {
     return config;
   });
 };
+
+// Turns a string into an Android friendly file-based resource name
+// File-based resource names can contain only lowercase a-z, 0-9, or underscore
+// Ex: "Plus Jakarta Sans" -> "plusjakartasans"
+function formatName(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9_]/g, '')
+}
 
 export default withAndroidXMLFont;
