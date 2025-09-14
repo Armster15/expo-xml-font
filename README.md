@@ -47,6 +47,8 @@ Inter-Black.ttf (900)
 
 2. Change all the dashes ("-"s) to underscores ("\_") and all the uppercase letters to lowercase letters. This is required to be compatible with Android's asset names restrictions
 
+    Allowed characters: lowercase letters (a-z), numbers (0-9), underscores (_)
+
 ```
 inter_thin.ttf (100)
 inter_extraLight.ttf (200)
